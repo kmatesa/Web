@@ -1,17 +1,51 @@
 <template>
   <div class="q-pa-md">
+   
+    
     <q-table
-      title="Popis svih knjiga"
-      :rows="rows"
+      flat bordered
+      :rows="books"
       :columns="columns"
       row-key="name"
-    />
+      :wrap-cells="true"
+    >
+   
+    </q-table>
   </div>
 
 </template>
 
-<script>
-const columns = [
+<script setup>
+
+import {ref, onMounted} from 'vue'
+import axios from 'axios';
+let books = ref([])
+onMounted(() => {
+  loadBooks()
+})
+async function loadBooks(){
+  await axios.get('http://localhost:3000/api/knjige/')
+  .then(result => {
+    console.log(result.data)
+    books.value = result.data
+    console.log(books.value[0].naslov)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+}
+
+const columns =[
+  {name: 'id', label: 'id', field: 'id'},
+  {name: 'naslov', aligin: 'centar', label: 'naslov', filed: 'naslov', sortable: true},
+  {name: 'autor', label: 'autor', filed:'autor', sortable:true},
+  {name:'opis', label:'opis',field:'opis'},
+  {name:'slika', label:'slika', field:'slika'},
+    {name:'stanje', label:'stanje', field:'stanje'},
+  {name:'status', label: 'status',field:'status'}
+]
+
+/*const columns = [
   {
     name: 'Knjiga',
     required: true,
@@ -134,13 +168,5 @@ const rows = [
   }
   
 ]
-
-export default {
-  setup () {
-    return {
-      columns,
-      rows
-    }
-  }
-}
+*/
 </script>

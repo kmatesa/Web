@@ -94,6 +94,13 @@ const linksList = [
     icon: 'book',
     link: '#/UnosKnjiga',
   },
+  {
+    title: 'Unos knjiga2',
+    caption: 'Unos novih knjiga',
+    icon: 'book',
+    link: '#/UnosKnjiga2',
+  },
+
 
   {
     title: 'Docs',
