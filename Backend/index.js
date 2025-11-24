@@ -6,6 +6,12 @@ const mysql = require("mysql");
 const app = express();
 const port = 3000;
 
+const options = {
+    origin: '*',
+};
+app.use(cors(options));
+
+
 // Parser za JSON podatke
 app.use(bodyParser.json());
 
@@ -49,6 +55,17 @@ app.post("/api/rezerv_knjige", (request, response) => {
     response.send(results);
   });
 });
+
+app.post("/api/unos_knjige", (request, response) => {
+  const data = request.body;
+  knjiga = [[data.naslov, data.autor, data.opis, data.slika, data.stanje,"slobodna"]]
+  connection.query("INSERT INTO knjiga (naslov, autor, opis, slika, stanje, status) VALUES ?",
+     [knjiga], (error, results) => {
+    if (error) throw error;
+    response.send(results);
+  });
+});
+
 
 app.listen(port, () => {
     console.log("Server running at port: " + port);
